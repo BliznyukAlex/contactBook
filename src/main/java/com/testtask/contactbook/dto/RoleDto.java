@@ -8,13 +8,16 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter @Getter
+@Setter
+@Getter
 public class RoleDto {
     private Long id;
     private String name;
 
-    public RoleDto(Role role){
+    public RoleDto(Role role) {
         this.id = role.getId();
         this.name = role.getName();
     }
+
+
 }

@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
-@Sql(value = {"/contact-list-after.sql", "/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-
+@Sql(value = {"/sql/contact-list-after.sql", "/sql/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class RegistrationControllerTest {
 
     @Autowired
@@ -27,9 +26,10 @@ class RegistrationControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
     @Test
     void addUser() throws Exception {
-        UserDto userDto = new UserDto("testUser","test");
+        UserDto userDto = new UserDto("testUser", "test");
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(userDto);
         MockHttpServletRequestBuilder builder =

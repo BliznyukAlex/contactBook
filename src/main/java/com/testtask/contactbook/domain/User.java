@@ -1,18 +1,23 @@
 package com.testtask.contactbook.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.testtask.contactbook.dto.UserDto;
+import com.testtask.contactbook.enums.Roles;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity(name = "user")
+@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,12 +29,17 @@ public class User implements UserDetails {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Contact> contacts;
 
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+
+    public User(UserDto userDto) {
+        this.userName = userDto.getUserName();
+        this.password = userDto.getPassword();
     }
 
     @Override
@@ -65,15 +75,29 @@ public class User implements UserDetails {
     public boolean isAdmin() {
         Role adminRole = null;
         for (Role role : roles) {
-            if (role.getName().equals("ROLE_ADMIN")) adminRole = role;
+            if (role.getName().equals(Roles.ROLE_ADMIN.name())) adminRole = role;
         }
-        return adminRole!=null;
+        return adminRole != null;
     }
+
     public boolean isUser() {
         Role userRole = null;
         for (Role role : roles) {
-            if (role.getName().equals("ROLE_USER")) userRole = role;
+            if (role.getName().equals(Roles.ROLE_USER.name())) userRole = role;
         }
-        return userRole!=null;
+        return userRole != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userName.equals(user.userName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName);
     }
 }

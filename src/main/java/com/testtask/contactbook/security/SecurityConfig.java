@@ -17,8 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-}
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/user/**").fullyAuthenticated()
-                .antMatchers("/", "/resources/**").permitAll()
+                .antMatchers("/", "/resources/**", "/v2/api-docs",
+                        "/swagger-resources/**", "/swagger-ui.html", "/webjars/springfox-swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

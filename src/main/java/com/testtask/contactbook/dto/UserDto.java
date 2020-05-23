@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,10 +17,15 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class UserDto {
     private Long id;
+    @NotNull
+    @Size(min = 1)
     private String userName;
+    @NotNull
+    @Size(min = 3)
     private String password;
     private Set<RoleDto> roles;
     private List<ContactDto> contacts;
@@ -27,23 +35,25 @@ public class UserDto {
         this.password = password;
     }
 
-    public UserDto(User user){
+    public UserDto(User user) {
         this.id = user.getId();
         this.userName = user.getUsername();
         this.password = user.getPassword();
         this.roles = getRolesDto(user.getRoles());
         this.contacts = getContactsDto(user.getContacts());
     }
-    public List<ContactDto> getContactsDto(List<Contact> contactsEntity){
+
+    public List<ContactDto> getContactsDto(List<Contact> contactsEntity) {
         List<ContactDto> contactDtos = new ArrayList<>();
-        for(Contact contact:contactsEntity){
+        for (Contact contact : contactsEntity) {
             contactDtos.add(new ContactDto(contact));
         }
         return contactDtos;
     }
-    private Set<RoleDto> getRolesDto(Set<Role> roleEntity){
+
+    private Set<RoleDto> getRolesDto(Set<Role> roleEntity) {
         Set<RoleDto> roleDtos = new HashSet<>();
-        for(Role role:roleEntity){
+        for (Role role : roleEntity) {
             roleDtos.add(new RoleDto(role));
         }
         return roleDtos;

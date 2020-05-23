@@ -23,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
-@Sql(value = {"/create-user-before.sql", "/contact-list-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = {"/contact-list-after.sql", "/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(value = {"/sql/create-user-before.sql", "/sql/contact-list-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/sql/contact-list-after.sql", "/sql/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @WithUserDetails(value = "user")
 public class ContactBookControllerTest {
 
@@ -36,7 +36,7 @@ public class ContactBookControllerTest {
 
     @Test
     public void addContact() throws Exception {
-        ContactDto contactDto = new ContactDto("Ole","Gunnar","+38(044)555-55-11");
+        ContactDto contactDto = new ContactDto("Ole", "Gunnar", "+38(044)555-55-11");
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(contactDto);
         MockHttpServletRequestBuilder builder =
@@ -80,27 +80,27 @@ public class ContactBookControllerTest {
 
     @Test
     public void updateContact() throws Exception {
-        ContactDto contactDto = new ContactDto("Ole","Gunnar","+38(044)555-55-11");
+        ContactDto contactDto = new ContactDto("Ole", "Gunnar", "+38(044)555-55-11");
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(contactDto);
         MockHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.put("/user/contacts/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(json);
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(json);
         this.mockMvc.perform(builder)
                 .andExpect(authenticated())
                 .andExpect(MockMvcResultMatchers.status()
-                .isOk())
+                        .isOk())
                 .andExpect(MockMvcResultMatchers.content()
-                .string("contact updated"));
+                        .string("contact updated"));
 
     }
 
     @Test
     public void removeContact() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/user/contacts/{contactId}",1))
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/user/contacts/{contactId}", 1))
                 .andExpect(authenticated())
                 .andExpect(MockMvcResultMatchers.status()
                         .isOk())

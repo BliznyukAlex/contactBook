@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -21,10 +22,6 @@ public class Role implements GrantedAuthority {
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
-
-    public Role(Long id) {
-        this.id = id;
-    }
 
     public Role(Long id, String name) {
         this.id = id;

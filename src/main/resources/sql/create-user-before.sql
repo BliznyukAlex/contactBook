@@ -1,5 +1,5 @@
-delete from user_roles;
-delete from user;
+--delete from user_roles;
+--delete from user;
 
 insert into user(id, user_name, password) values
 (1, 'user', '$2a$10$XlpTkvfWciT8TqP8x7s7ruex0Pgm.37OnIaibgGfG1ueuAQqvK.oC'),
